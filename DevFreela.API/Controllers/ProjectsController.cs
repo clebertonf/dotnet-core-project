@@ -1,5 +1,6 @@
 ﻿using DevFreela.API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace DevFreela.API.Controllers
 {
@@ -7,10 +8,11 @@ namespace DevFreela.API.Controllers
     public class ProjectsController : ControllerBase
     {
         // api/projects?query=net core
-       [HttpGet]
-       public IActionResult Get(string query)
+        [HttpGet]
+       public IActionResult Get(string query, [FromServices] IOptions<OpeningTimeOption> openingTimeOption)
         {
-            return Ok();
+            var valuesOpeningTime = new { StartAt =openingTimeOption.Value.StartAt.Hours, FinishAt = openingTimeOption.Value.FinishAt.Hours };
+            return Ok(valuesOpeningTime);
         }
 
         // api/projects/2
@@ -21,7 +23,6 @@ namespace DevFreela.API.Controllers
 
             return Ok();
         }
-
 
         [HttpPost]
         public IActionResult Post([FromBody] CreateProjectModel createProject)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using DevFreela.Core.Enums;
 
 namespace DevFreela.Core.Entities
@@ -29,5 +30,38 @@ namespace DevFreela.Core.Entities
         public DateTime FinishedAt { get; private set; }
         public ProjectStatusEnum Status { get; private set; }
         public List<ProjectComment> Comments { get; private set; }
+
+        public void Cancel()
+        {
+            if (Status.Equals(ProjectStatusEnum.InProgress))
+            {
+                Status = ProjectStatusEnum.Cancelled;
+            }
+        }
+
+        public void Start()
+        {
+            if (Status.Equals(ProjectStatusEnum.Created))
+            {
+                Status = ProjectStatusEnum.InProgress;
+                StartedAt = DateTime.Now;
+            }
+        }
+
+        public void Finish()
+        {
+            if (Status.Equals(ProjectStatusEnum.InProgress))
+            {
+                Status = ProjectStatusEnum.Finished;
+                FinishedAt = DateTime.Now;
+            }
+        }
+
+        public void Update(string title, string description, decimal totalCost)
+        {
+            Title = title;
+            Description = description;
+            TotalCost = totalCost;
+        }
     }
 }

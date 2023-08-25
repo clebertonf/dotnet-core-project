@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace DevFreela.Application.Services.Implementations
 {
-    internal class ProjectService : IprojectService
+    public class ProjectService : IProjectService
     {
         private readonly DevFreelaDbContext _dbContext;
         public ProjectService(DevFreelaDbContext dbContext)

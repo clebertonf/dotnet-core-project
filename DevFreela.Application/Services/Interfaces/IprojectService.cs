@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DevFreela.Application.Services.Interfaces
 {
-    public interface IprojectService
+    public interface IProjectService
     {
         List<ProjectViewModel> GetAll(string query);
         ProjectDetailsViewModel GetById(int id);

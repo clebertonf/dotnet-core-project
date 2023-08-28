@@ -7,13 +7,13 @@ namespace DevFreela.Core.Entities
 {
     public class Project : BaseEntity
     {
-        public Project(string title, string description, int idClient, int idFreelancer, decimal totaCost)
+        public Project(string title, string description, int idClient, int idFreelancer, decimal totalCost)
         {
             Title = title;
             Description = description;
             IdClient = idClient;
             IdFreelancer = idFreelancer;
-            TotalCost = totaCost;
+            TotalCost = totalCost;
 
             CreatedAt = DateTime.Now;
             Status = ProjectStatusEnum.Created;

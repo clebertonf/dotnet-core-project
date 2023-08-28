@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.Services.Implementations;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace DevFreela.API
 {
@@ -27,7 +27,8 @@ namespace DevFreela.API
 
             services.Configure<OpeningTimeOption>(Configuration.GetSection("OpeningTime"));
 
-            services.AddSingleton<DevFreelaDbContext>();
+            var connectionString = Configuration.GetConnectionString("DevFreelaCs");
+            services.AddDbContext<DevFreelaDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IUserService, UserService>();

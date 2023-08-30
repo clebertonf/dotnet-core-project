@@ -3,6 +3,7 @@ using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.ViewModels;
 using DevFreela.Core.Entities;
 using DevFreela.infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,6 +21,7 @@ namespace DevFreela.Application.Services.Implementations
         {
             var project = new Project(inputModel.Title,inputModel.Description, inputModel.IdClient, inputModel.IdFreelancer, inputModel.TotalCost);
             _dbContext.Projects.Add(project);
+            _dbContext.SaveChanges();
 
             return project.Id;
         }
@@ -28,18 +30,21 @@ namespace DevFreela.Application.Services.Implementations
         {
             var comment = new ProjectComment(inputModel.Content, inputModel.idProject, inputModel.idUser);
             _dbContext.ProjectComments.Add(comment);
+            _dbContext.SaveChanges();
         }
 
         public void Delete(int id)
         {
             var project = _dbContext.Projects.FirstOrDefault(p => p.Id.Equals(id));
             project.Cancel();
+            _dbContext.SaveChanges();
         }
 
         public void Finish(int id)
         {
             var project = _dbContext.Projects.FirstOrDefault(p => p.Id.Equals(id));
             project.Finish();
+            _dbContext.SaveChanges();
         }
 
         public List<ProjectViewModel> GetAll(string query)
@@ -52,7 +57,10 @@ namespace DevFreela.Application.Services.Implementations
 
         public ProjectDetailsViewModel GetById(int id)
         {
-            var project = _dbContext.Projects.FirstOrDefault(p => p.Id.Equals(id));
+            var project = _dbContext.Projects
+                .Include(p => p.Client)
+                .Include(p => p.Freelancer)
+                .FirstOrDefault(p => p.Id.Equals(id));
            
             if(project is not null)
             {
@@ -62,7 +70,9 @@ namespace DevFreela.Application.Services.Implementations
                     project.Description,
                     project.TotalCost,
                     project.StartedAt,
-                    project.FinishedAt
+                    project.FinishedAt,
+                    project.Client.FullName,
+                    project.Freelancer.FullName
                     );
                 return projectDetailsViewModel;
             }
@@ -74,6 +84,7 @@ namespace DevFreela.Application.Services.Implementations
         {
             var project = _dbContext.Projects.FirstOrDefault(p => p.Id.Equals(id));
             project.Start();
+            _dbContext.SaveChanges();
         }
 
         public void Update(UpdateProjectInputModel inputModel)
@@ -81,6 +92,7 @@ namespace DevFreela.Application.Services.Implementations
             var project = _dbContext.Projects.FirstOrDefault(p => p.Id.Equals(inputModel.Id));
 
             project.Update(project.Title, project.Description, project.TotalCost);
+            _dbContext.SaveChanges();
         }
     }
 }

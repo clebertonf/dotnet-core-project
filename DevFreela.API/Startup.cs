@@ -9,6 +9,8 @@ using Microsoft.OpenApi.Models;
 using DevFreela.Application.Services.Interfaces;
 using DevFreela.Application.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
+using MediatR;
+using DevFreela.Application.Commands.CreateProject;
 
 namespace DevFreela.API
 {
@@ -33,6 +35,8 @@ namespace DevFreela.API
             // Usar banco só em mémoria (para testes). Depois é so gerar as migrations
             // dotnet add package Microsoft.EntityFrameworkCore.InMemory
             // services.AddDbContext<DevFreelaDbContext>(options => options.UseInMemoryDatabase("DevFreela"));
+
+            services.AddMediatR(typeof(CreateProjectCommand));
 
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IUserService, UserService>();

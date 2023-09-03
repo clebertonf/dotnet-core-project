@@ -4,7 +4,7 @@ using DevFreela.Application.Commands.DeleteProject;
 using DevFreela.Application.Commands.FinishProject;
 using DevFreela.Application.Commands.StartProject;
 using DevFreela.Application.Commands.UpdateProject;
-using DevFreela.Application.InputModels;
+using DevFreela.Application.Queries.GetAllProjects;
 using DevFreela.Application.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,9 +26,10 @@ namespace DevFreela.API.Controllers
 
         // api/projects?query=net core
         [HttpGet]
-       public IActionResult Get(string query)
+       public async Task<IActionResult> Get(string query)
         {
-            var projects = _projectService.GetAll(query);
+            var getAllProjectsQuery = new GetAllProjectsQuery(query);
+            var projects = await _mediator.Send(getAllProjectsQuery);
 
             return Ok(projects);
         }

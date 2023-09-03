@@ -2,7 +2,6 @@
 using DevFreela.Application.ViewModels;
 using DevFreela.infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DevFreela.Application.Services.Implementations
@@ -13,14 +12,6 @@ namespace DevFreela.Application.Services.Implementations
         public ProjectService(DevFreelaDbContext dbContext)
         {
             _dbContext = dbContext;
-        }
-
-        public List<ProjectViewModel> GetAll(string query)
-        {
-            var projects = _dbContext.Projects;
-            var projectViewModel = projects.Select(p => new ProjectViewModel(p.Id, p.Title, p.CreatedAt)).ToList();
-
-            return projectViewModel;
         }
 
         public ProjectDetailsViewModel GetById(int id)

@@ -1,27 +1,27 @@
-﻿using DevFreela.Application.Services.Interfaces;
-using DevFreela.Application.ViewModels;
+﻿using DevFreela.Application.ViewModels;
 using DevFreela.infrastructure.Persistence;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace DevFreela.Application.Services.Implementations
+namespace DevFreela.Application.Queries.GetProjectById
 {
-    public class ProjectService : IProjectService
+    public class GetProjectByIdQueryHandler : IRequestHandler<GetProjectByIdQuery, ProjectDetailsViewModel>
     {
         private readonly DevFreelaDbContext _dbContext;
-        public ProjectService(DevFreelaDbContext dbContext)
+        public GetProjectByIdQueryHandler(DevFreelaDbContext dbContext)
         {
             _dbContext = dbContext;
         }
-
-        public ProjectDetailsViewModel GetById(int id)
+        public async Task<ProjectDetailsViewModel> Handle(GetProjectByIdQuery request, CancellationToken cancellationToken)
         {
-            var project = _dbContext.Projects
+            var project = await _dbContext.Projects
                 .Include(p => p.Client)
                 .Include(p => p.Freelancer)
-                .FirstOrDefault(p => p.Id.Equals(id));
-           
-            if(project is not null)
+                .SingleOrDefaultAsync(p => p.Id.Equals(request.Id));
+
+            if (project is not null)
             {
                 var projectDetailsViewModel = new ProjectDetailsViewModel(
                     project.Id,

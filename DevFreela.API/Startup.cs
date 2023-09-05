@@ -6,8 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using DevFreela.Application.Services.Interfaces;
-using DevFreela.Application.Services.Implementations;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using DevFreela.Application.Commands.CreateProject;
@@ -37,10 +35,6 @@ namespace DevFreela.API
             // services.AddDbContext<DevFreelaDbContext>(options => options.UseInMemoryDatabase("DevFreela"));
 
             services.AddMediatR(typeof(CreateProjectCommand));
-
-            services.AddScoped<IProjectService, ProjectService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ISkillService, SkillService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

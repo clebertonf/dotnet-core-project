@@ -7,3 +7,4 @@
 - infrastructure
 ---
 - Repository pattern
+- EF core

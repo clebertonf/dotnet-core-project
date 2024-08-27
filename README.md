@@ -8,4 +8,5 @@
 ---
 - Repository pattern
 - EF core
+- Input Models
 - View Models

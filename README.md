@@ -1,6 +1,6 @@
 # DevFreela
 
-Project dev freela.
+ Dev freela:
 
 - Clean Architecture
 - API
